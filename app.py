@@ -70,7 +70,7 @@ def handle_message(event):
 		line_bot_api.push_message(userID,message)
 		message = TextSendMessage(text=userID)
 		line_bot_api.push_message(er,message)
-		message = TextSendMessage(text='https://forms.gle/KH523xXrdh66wZiV9')
+		message = TextSendMessage(text='https://forms.gle/Dd3vT4aqd37Fdhvk6')
 		userStatusSheet.update_cell(userRow, 2, '註冊中')
 	elif status == '註冊中':
 		try:
