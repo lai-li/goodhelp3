@@ -128,6 +128,9 @@ def handle_message(event):
 				columns=columnReply
 			)
 		)
+		elif userSend == '水電行':
+			infoCell = userInfoSheet.find(userID)
+			message = TextSendMessage(text='{}'.format(userInfoSheet.cell(infoCell.row,4).value))
 		else:
 			message = TextSendMessage(text=userSend)
 
