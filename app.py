@@ -69,19 +69,19 @@ def handle_message(event):
 		message = TextSendMessage(text='你尚未註冊,請填資料,\n請複製以下的註册碼來填寫資料')
 		line_bot_api.push_message(userID,message)
 		message = TextSendMessage(text=userID)
-		line_bot_api.push_message(er,message)
+		line_bot_api.push_message(userID,message)
 		message = TextSendMessage(text='https://forms.gle/Dd3vT4aqd37Fdhvk6')
 		userStatusSheet.update_cell(userRow, 2, '註冊中')
 	elif status == '註冊中':
 		try:
 			infoCell = userInfoSheet.find(userID)
 			userStatusSheet.update_cell(userRow, 2, '已註冊')
-			message = TextSendMessage(text='Hi,{}'.format(userInfoSheet.cell(infoCell.row,3).value))
+			message = TextSendMessage(text='Hi,{}您好,已註冊成功'.format(userInfoSheet.cell(infoCell.row,3).value))
 		except:
 			message = TextSendMessage(text='你尚未註冊,請填資料,\n請複製以下的註册碼來填寫資料')
 			line_bot_api.push_message(userID,message)
 			message = TextSendMessage(text=userID)
-			line_bot_api.push_message(er,message)
+			line_bot_api.push_message(userID,message)
 			message = TextSendMessage(text='https://forms.gle/KH523xXrdh66wZiV9')
 			userStatusSheet.update_cell(userRow, 2, '註冊中')
 	elif status == '已註冊':
@@ -128,8 +128,8 @@ def handle_message(event):
 				columns=columnReply
 			)
 		)
-	else:
-		message = TextSendMessage(text=userSend)
+		else:
+			message = TextSendMessage(text=userSend)
 
 	line_bot_api.reply_message(event.reply_token, message)
 
