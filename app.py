@@ -133,6 +133,8 @@ def handle_message(event):
 			message = TextSendMessage(text='{}'.format(userInfoSheet.cell(infoCell.row,4).value))
 		else:
 			message = TextSendMessage(text=userSend)
+	else:
+		message = TextSendMessage(text=userSend)
 
 	line_bot_api.reply_message(event.reply_token, message)
 
