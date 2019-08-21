@@ -96,11 +96,29 @@ def handle_message(event):
 			userStatusSheet.update_cell(userRow, 2, '已註冊')
 			message = TextSendMessage(text='Hi,{}您好,已註冊成功'.format(userInfoSheet.cell(infoCell.row,3).value))
 		except:
+			#文字提示
 			message = TextSendMessage(text='你尚未註冊,請填資料,\n請複製以下的註册碼來填寫資料')
 			line_bot_api.push_message(userID,message)
+			#傳送使用者ID
 			message = TextSendMessage(text=userID)
 			line_bot_api.push_message(userID,message)
-			message = TextSendMessage(text='https://forms.gle/KH523xXrdh66wZiV9')
+			#傳送確認表單
+			message = TemplateSendMessage(
+				alt_text='註冊表單',
+				template=ConfirmTemplate(
+					text='請選擇【填寫表單】來註冊，完成後請點擊【完成】按鈕',
+					actions=[
+						URIAction(
+							label='填寫表單',
+							uri='line://app/1609239460-ZEJqMXl0'
+						),
+						MessageAction(
+						label='完成',
+						text='完成'
+						)
+					]
+				)
+			)
 			userStatusSheet.update_cell(userRow, 2, '註冊中')
 	elif status == '已註冊':
 		if userSend == '你好':
