@@ -126,14 +126,14 @@ def handle_message(event):
 			message = TextSendMessage(text='Hello, ' + userName)
 		elif userSend == '天氣':
 			userStatusSheet.update_cell(userRow, 2, '天氣查詢')
-			message = TextSendMessage(text='請傳送你的座標')
+			message = TextSendMessage(text='請傳送你的座標,請按下列的+號選項')
 		elif userSend in ['CNY', 'THB', 'SEK', 'USD', 'IDR', 'AUD', 'NZD', 'PHP', 'MYR', 'GBP', 'ZAR', 'CHF', 'VND', 'EUR', 'KRW', 'SGD', 'JPY', 'CAD', 'HKD']:
 			message = TextSendMessage(text=currencySearch(userSend))
 		elif userSend == 'SOS':
 			message = TemplateSendMessage(
 				alt_text='這是個按鈕選單',
 				template=ButtonsTemplate(
-					thumbnail_image_url='https://i.imgur.com/Fpusd5M.jpg',
+					thumbnail_image_url='https://i.imgur.com/Fpusd5M.png',
 					title='這是您的選單按鈕',
 					text='請選擇以下的項目,另有貨幣查詢功能,需輸入貨幣代碼3位大寫英文',
 					actions=[
@@ -160,7 +160,7 @@ def handle_message(event):
 			message = TemplateSendMessage(
 				alt_text='這是個按鈕選單',
 				template=ButtonsTemplate(
-					thumbnail_image_url='https://i.imgur.com/siBLDMx.png',
+					thumbnail_image_url='https://i.imgur.com/iKYedf6.png',
 					title='查詢天氣',
 					text='請選擇地點',
 					actions=[
