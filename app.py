@@ -133,14 +133,10 @@ def handle_message(event):
 			message = TemplateSendMessage(
 				alt_text='這是個按鈕選單',
 				template=ButtonsTemplate(
-					thumbnail_image_url='https://i.imgur.com/z5MxjiU.jpg',
+					thumbnail_image_url='https://i.imgur.com/Fpusd5M.jpg',
 					title='這是您的選單按鈕',
-					text='請選擇',
+					text='請選擇以下的項目,另有貨幣查詢功能,需輸入貨幣代碼3位大寫英文',
 					actions=[
-						MessageAction(
-							label='便當店',
-							text='便當店'
-						),
 						MessageAction(
 							label='醫生',
 							text='醫生'
@@ -149,6 +145,10 @@ def handle_message(event):
 							label='家人',
 							text='家人'
 						),
+						MessageAction(
+							label='報警',
+							text='112'
+						),
 						URIAction(
 							label='修改連絡資料',
 							uri='https://forms.gle/J8UL7uPCJabMuWvV6'
@@ -156,7 +156,25 @@ def handle_message(event):
 					]
 				)
 			)
-
+		elif userSend == '氣候':
+			message = TemplateSendMessage(
+				alt_text='這是個按鈕選單',
+				template=ButtonsTemplate(
+					thumbnail_image_url='https://i.imgur.com/siBLDMx.png',
+					title='查詢天氣',
+					text='請選擇地點',
+					actions=[
+						MessageAction(
+							label='查詢其他地方',
+							text='天氣'
+						),
+						URIAction(
+							label='你所在位置',
+							uri='https://watch.ncdr.nat.gov.tw/townwarn/'
+						)
+					]
+				)
+			)
 
 		elif userSend in ['spotify','音樂','music']:
 			columnReply,textReply = scrapSpotify()
@@ -175,9 +193,28 @@ def handle_message(event):
 		elif userSend == '家人':
 			infoCell = userInfoSheet.find(userID)
 			message = TextSendMessage(text='{}'.format(userInfoSheet.cell(infoCell.row,7).value))
+		elif userSend == '水電行':
+			infoCell = userInfoSheet.find(userID)
+			message = TextSendMessage(text='{}'.format(userInfoSheet.cell(infoCell.row,5).value))			
 		else:
 			message = TextSendMessage(text=userSend)
-
+	elif status == '天氣查詢':
+		message = TemplateSendMessage(
+			alt_text='是否取消查詢',
+			template=ConfirmTemplate(
+				text='是否取消查詢？',
+				actions=[
+					URIAction(
+							label='傳送位置資訊',
+							uri='line://nv/location'
+					),
+					MessageAction(
+						label='取消查詢',
+						text='取消'
+					)
+				]
+			)
+		)
 	line_bot_api.reply_message(event.reply_token, message)
 
 @handler.add(MessageEvent, message=LocationMessage)
@@ -204,6 +241,31 @@ def handle_message(event):
 		gammaResult = gammamonitor(userLon,userLat)
 		userStatusSheet.update_cell(userRow, 2, '已註冊')
 		message = TextSendMessage(text='🌤天氣狀況：\n{}\n🚩空氣品質：\n{}\n\n🌌輻射值：\n{}'.format(weatherResult,AQIResult,gammaResult))
+	elif status == '':
+		#文字提示
+		message = TextSendMessage(text='你尚未註冊，請填基本資料！\n請複製以下註冊碼來填寫表單')
+		line_bot_api.push_message(userID,message)
+		#傳送使用者ID
+		message = TextSendMessage(text=userID)
+		line_bot_api.push_message(userID,message)
+		#傳送確認表單
+		message = TemplateSendMessage(
+			alt_text='註冊表單',
+			template=ConfirmTemplate(
+				text='請選擇[填寫表單]來註冊, 完成後請點擊[完成]按鈕',
+				actions=[
+					URIAction(
+							label='填寫表單',
+							uri='line://app/1609239460-ZEJqMXl0'
+					),
+					MessageAction(
+						label='填寫完成',
+						text='完成'
+					)
+				]
+			)
+		)				
+		userStatusSheet.update_cell(userRow, 2, '註冊中')		
 	else:
 		message = TextSendMessage(text='傳地址幹嘛?')
 	line_bot_api.reply_message(event.reply_token, message)
