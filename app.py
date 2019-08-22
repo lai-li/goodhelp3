@@ -133,7 +133,7 @@ def handle_message(event):
 			message = TemplateSendMessage(
 				alt_text='這是個按鈕選單',
 				template=ButtonsTemplate(
-					thumbnail_image_url='https://w3.nknu.edu.tw/images/sampledata/imageshow/_20190102-4.jpg',
+					thumbnail_image_url='https://i.imgur.com/z5MxjiU.jpg',
 					title='這是您的選單按鈕',
 					text='請選擇',
 					actions=[
