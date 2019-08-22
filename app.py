@@ -129,34 +129,35 @@ def handle_message(event):
 			message = TextSendMessage(text='請傳送你的座標')
 		elif userSend in ['CNY', 'THB', 'SEK', 'USD', 'IDR', 'AUD', 'NZD', 'PHP', 'MYR', 'GBP', 'ZAR', 'CHF', 'VND', 'EUR', 'KRW', 'SGD', 'JPY', 'CAD', 'HKD']:
 			message = TextSendMessage(text=currencySearch(userSend))
-		elif userSend == '高師大':
+		elif userSend == 'SOS':
 			message = TemplateSendMessage(
 				alt_text='這是個按鈕選單',
 				template=ButtonsTemplate(
-
 					thumbnail_image_url='https://w3.nknu.edu.tw/images/sampledata/imageshow/_20190102-4.jpg',
-					title='國立高雄師範大學',
-					text='請選擇動作',
+					title='這是您的選單按鈕',
+					text='請選擇',
 					actions=[
 						MessageAction(
-							label='美金',
-							text='USD'
+							label='便當店',
+							text='便當店'
 						),
 						MessageAction(
-							label='日幣',
-							text='JPY'
+							label='醫生',
+							text='醫生'
 						),
 						MessageAction(
-							label='你好',
-							text='你好'
+							label='家人',
+							text='家人'
 						),
 						URIAction(
-							label='帶我去高師大',
-							uri='https://w3.nknu.edu.tw'
+							label='修改連絡資料',
+							uri='https://forms.gle/J8UL7uPCJabMuWvV6'
 						)
 					]
 				)
 			)
+
+
 		elif userSend in ['spotify','音樂','music']:
 			columnReply,textReply = scrapSpotify()
 			message = TemplateSendMessage(
@@ -165,13 +166,17 @@ def handle_message(event):
 				columns=columnReply
 			)
 		)
-		elif userSend == '水電行':
+		elif userSend == '便當店':
 			infoCell = userInfoSheet.find(userID)
 			message = TextSendMessage(text='{}'.format(userInfoSheet.cell(infoCell.row,4).value))
+		elif userSend == '醫生':
+			infoCell = userInfoSheet.find(userID)
+			message = TextSendMessage(text='{}'.format(userInfoSheet.cell(infoCell.row,6).value))
+		elif userSend == '家人':
+			infoCell = userInfoSheet.find(userID)
+			message = TextSendMessage(text='{}'.format(userInfoSheet.cell(infoCell.row,7).value))
 		else:
 			message = TextSendMessage(text=userSend)
-	else:
-		message = TextSendMessage(text=userSend)
 
 	line_bot_api.reply_message(event.reply_token, message)
 
