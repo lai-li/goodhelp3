@@ -161,7 +161,7 @@ def handle_message(event):
 				alt_text='這是個按鈕選單',
 				template=ButtonsTemplate(
 					thumbnail_image_url='https://i.imgur.com/iKYedf6.png',
-					title='查詢天氣',
+					title='天氣查詢',
 					text='請選擇地點',
 					actions=[
 						MessageAction(
@@ -215,6 +215,7 @@ def handle_message(event):
 				]
 			)
 		)
+		userStatusSheet.update_cell(userRow, 2, '已註冊')
 	line_bot_api.reply_message(event.reply_token, message)
 
 @handler.add(MessageEvent, message=LocationMessage)
